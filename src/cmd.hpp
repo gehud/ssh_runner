@@ -4,6 +4,8 @@
 #include <QList>
 #include <QJsonObject>
 
+#include "ssh.hpp"
+
 class CommandRunner
 {
 public:
@@ -11,8 +13,12 @@ public:
 
     bool readDevicesFromFile(const QString &filename);
     bool saveResultsToFile(const QString &filename);
+    void run(const QString& username);
 
 private:
     QList<QString> _devices;
     QJsonObject _results;
+    SshClient _client;
+
+    QJsonObject runOnDevice(const QString& ip, const QString& username);
 };

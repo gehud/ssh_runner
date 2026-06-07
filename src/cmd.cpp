@@ -39,6 +39,37 @@ bool CommandRunner::readDevicesFromFile(const QString &filename)
     return true;
 }
 
+QJsonObject CommandRunner::runOnDevice(const QString &ip, const QString &username)
+{
+    SshClient::Result result = _client.run(ip, username);
+
+    QJsonObject obj;
+    obj["ok"] = result.success;
+
+    if (result.success)
+    {
+        obj["output"] = result.output;
+    }
+    else
+    {
+        obj["error"] = result.error;
+    }
+
+    return obj;
+}
+
+void CommandRunner::run(const QString &username)
+{
+    _results = QJsonObject();
+
+    for (const QString &ip : _devices)
+    {
+        qDebug() << "Processing device:" << ip;
+        QJsonObject deviceResult = runOnDevice(ip, username);
+        _results[ip] = deviceResult;
+    }
+}
+
 bool CommandRunner::saveResultsToFile(const QString &filename)
 {
     QFile file(filename);

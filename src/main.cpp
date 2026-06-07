@@ -30,11 +30,6 @@ int main(int argc, char *argv[])
                                   "username");
     parser.addOption(userOption);
 
-    QCommandLineOption passwordOption(QStringList() << "p" << "password",
-                                      "Password for authentication.",
-                                      "password");
-    parser.addOption(passwordOption);
-
     QCommandLineOption outputOption(QStringList() << "o" << "output",
                                     "Output JSON file.",
                                     "output_file");
@@ -62,13 +57,6 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    if (!parser.isSet(passwordOption))
-    {
-        qCritical() << "Error: --password argument is required";
-        parser.showHelp(EXIT_FAILURE);
-        return EXIT_FAILURE;
-    }
-
     if (!parser.isSet(outputOption))
     {
         qCritical() << "Error: --output argument is required";
@@ -78,7 +66,6 @@ int main(int argc, char *argv[])
 
     QString inputFile = parser.value(inputOption);
     QString username = parser.value(userOption);
-    QString password = parser.value(passwordOption);
     QString outputFile = parser.value(outputOption);
 
     CommandRunner runner;
@@ -86,10 +73,14 @@ int main(int argc, char *argv[])
     if (!runner.readDevicesFromFile(inputFile)) {
         return EXIT_FAILURE;
     }
+    
+    runner.run(username);
 
     if (!runner.saveResultsToFile(outputFile)) {
         return EXIT_FAILURE;
     }
+
+    qDebug() << "Processing completed";
 
     return EXIT_SUCCESS;
 }
