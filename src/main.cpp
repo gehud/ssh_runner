@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "config.hpp"
+#include "cmd.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -79,6 +80,16 @@ int main(int argc, char *argv[])
     QString username = parser.value(userOption);
     QString password = parser.value(passwordOption);
     QString outputFile = parser.value(outputOption);
+
+    CommandRunner runner;
+
+    if (!runner.readDevicesFromFile(inputFile)) {
+        return EXIT_FAILURE;
+    }
+
+    if (!runner.saveResultsToFile(outputFile)) {
+        return EXIT_FAILURE;
+    }
 
     return EXIT_SUCCESS;
 }
