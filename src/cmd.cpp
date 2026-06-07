@@ -44,7 +44,6 @@ QJsonObject CommandRunner::runOnDevice(const QString &ip, const QString &usernam
     SshClient::Result result = _client.run(ip, username);
 
     QJsonObject obj;
-    obj["ok"] = result.success;
 
     if (result.success)
     {
