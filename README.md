@@ -4,6 +4,7 @@ A console application for executing commands on remote devices via SSH, saving t
 
 ## Requirements
 
+- SSH
 - CMake 3.19 or higher
 - Qt6 (Core and Network modules)
 - C++17 compatible compiler
